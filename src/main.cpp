@@ -1,11 +1,8 @@
-// nrf
 #include <hal/nrf_wdt.h>
 #include <legacy/nrf_drv_clock.h>
 #include <libraries/gpiote/app_gpiote.h>
 #include <softdevice/common/nrf_sdh.h>
 #include <nrf_delay.h>
-
-// nimble
 #define min // workaround: nimble's min/max macros conflict with libstdc++
 #define max
 #include <controller/ble_ll.h>
@@ -19,8 +16,6 @@
 #include <transport/ram/ble_hci_ram.h>
 #undef max
 #undef min
-
-// FreeRTOS
 #include <FreeRTOS.h>
 #include <task.h>
 #include <timers.h>
@@ -55,6 +50,9 @@ Pinetime::Logging::NrfLogger logger;
 Pinetime::Logging::DummyLogger logger;
 #endif
 
+#include "watchface.h"
+#include "styles.h"
+
 static constexpr uint8_t touchPanelTwiAddress = 0x15;
 static constexpr uint8_t motionSensorTwiAddress = 0x18;
 static constexpr uint8_t heartRateSensorTwiAddress = 0x44;
@@ -73,9 +71,6 @@ Pinetime::Drivers::St7789 lcd {lcdSpi, Pinetime::PinMap::LcdDataCommand, Pinetim
 Pinetime::Drivers::Spi flashSpi {spi, Pinetime::PinMap::SpiFlashCsn};
 Pinetime::Drivers::SpiNorFlash spiNorFlash {flashSpi};
 
-// The TWI device should work @ up to 400Khz but there is a HW bug which prevent it from
-// respecting correct timings. According to erratas heet, this magic value makes it run
-// at ~390Khz with correct timings.
 static constexpr uint32_t MaxTwiFrequencyWithoutHardwareBug {0x06200000};
 Pinetime::Drivers::TwiMaster twiMaster {NRF_TWIM1, MaxTwiFrequencyWithoutHardwareBug, Pinetime::PinMap::TwiSda, Pinetime::PinMap::TwiScl};
 Pinetime::Drivers::Cst816S touchPanel {twiMaster, touchPanelTwiAddress};
