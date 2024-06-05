@@ -1,5 +1,6 @@
 image:
   file: docker/.gitpod.Dockerfile
+
 github:
   prebuilds:
     # enable for the master/default branch (defaults to true)
@@ -15,12 +16,14 @@ github:
     # add a "Review in Gitpod" button to pull requests (defaults to false)
     addBadge: false
     # add a label once the prebuild is ready to pull requests (defaults to false)
-    addLabel: false #prebuilt-in-gitpod
-
-    image: gitpod/workspace-full
+    addLabel: false
 
 tasks:
-  - init: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi gdb-arm-none-eabi openocd cmake ninja-build
+  - init: |
+      sudo apt-get update
+      sudo apt-get install -y gcc-arm-none-eabi gdb-arm-none-eabi openocd cmake ninja-build
     command: |
       cmake -Bbuild -GNinja
       ninja -C build
+      openocd -f interface/stlink-v2.cfg -f target/nrf52.cfg -c "program build/src/InfiniTime.hex verify reset; shutdown"
+      echo "Build and flash completed!"
