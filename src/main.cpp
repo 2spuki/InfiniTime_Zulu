@@ -52,6 +52,7 @@ Pinetime::Logging::DummyLogger logger;
 
 #include "watchface.h"
 #include "styles.h"
+#include "lvgl.h"
 
 static constexpr uint8_t touchPanelTwiAddress = 0x15;
 static constexpr uint8_t motionSensorTwiAddress = 0x18;
