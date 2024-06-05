@@ -1,6 +1,29 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(pinetime-app C CXX ASM)
+cmake_minimum_required(VERSION 3.10)
+
+# Set the project name and version
+project(InfiniTime_Zulu VERSION 1.0)
+
+# Specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Add sources
+add_executable(InfiniTime_Zulu
+    src/main.cpp
+    src/watchface.cpp
+    src/styles.cpp
+    src/watchface.h
+    src/styles.h
+)
+
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/lvgl)
+include_directories(${CMAKE_SOURCE_DIR}/assets)
+
+# Link libraries
+target_link_libraries(InfiniTime_Zulu lvgl)
 
 
 # define some variables just for this example to determine file locations
